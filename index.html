@@ -3,115 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Учёт сделок</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #message {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 4px;
-            display: none;
-        }
-        .success {
-            background-color: #dff0d8;
-            color: #3c763d;
-            border: 1px solid #d6e9c6;
-        }
-    </style>
+    <title>Учет сделок с ценными бумагами</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Внесение информации по сделке</h1>
-    
-    <form id="dealForm">
+    <div class="container">
+        <h1>Мои сделки</h1>
+        
         <div class="form-group">
-            <label for="dealName">Название сделки:</label>
-            <input type="text" id="dealName" name="dealName" required>
-        </div
-     
-        <div class="form-group">
-            <label for="dealDate">Дата сделки:</label>
-            <input type="date" id="dealDate" name="dealDate" required>
+            <label for="ticker">Тикер:</label>
+            <input type="text" id="ticker" required>
         </div>
         
         <div class="form-group">
-            <label for="amount">Сумма сделки:</label>
-            <input type="number" id="amount" name="amount" step="0.01" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="status">Статус сделки:</label>
-            <select id="status" name="status" required>
-                <option value="">Выберите статус</option>
-                <option value="new">Новая</option>
-                <option value="in_progress">В процессе</option>
-                <option value="completed">Завершена</option>
-                <option value="cancelled">Отменена</option>
+            <label for="operation">Операция:</label>
+            <select id="operation">
+                <option value="buy">Покупка</option>
+                <option value="sell">Продажа</option>
             </select>
         </div>
         
         <div class="form-group">
-            <label for="description">Комментарий:</label>
-            <textarea id="description" name="description" rows="4"></textarea>
+            <label for="price">Цена за единицу:</label>
+            <input type="number" id="price" step="0.01" required>
         </div>
         
-        <button type="button" onclick="submitForm()">Внести информацию</button>
-    </form>
+        <div class="form-group">
+            <label for="quantity">Количество:</label>
+            <input type="number" id="quantity" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="date">Дата сделки:</label>
+            <input type="date" id="date" required>
+        </div>
+        
+        <button id="addTrade">Добавить сделку</button>
+        
+        <h2>История сделок</h2>
+        <table id="tradesTable">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Тикер</th>
+                    <th>Операция</th>
+                    <th>Цена</th>
+                    <th>Кол-во</th>
+                    <th>Сумма</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody id="tradesList">
+                <!-- Сделки будут добавляться здесь -->
+            </tbody>
+        </table>
+    </div>
     
-    <div id="message" class="success"></div>
-    
-    <script>
-        function submitForm() {
-            // Здесь будет логика отправки данных на сервер
-            // Пока просто показываем сообщение
-            
-            document.getElementById('message').textContent = 'Информация внесена';
-            document.getElementById('message').style.display = 'block';
-            
-            // Очищаем форму (опционально)
-            // document.getElementById('dealForm').reset();
-            
-            // Скрываем сообщение через 3 секунды
-            setTimeout(() => {
-                document.getElementById('message').style.display = 'none';
-            }, 3000);
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
