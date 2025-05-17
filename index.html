@@ -10,17 +10,10 @@
     <div class="container">
         <h1>Мои сделки</h1>
         
+        <h2>Добавить покупку</h2>
         <div class="form-group">
             <label for="ticker">Тикер:</label>
             <input type="text" id="ticker" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="operation">Операция:</label>
-            <select id="operation">
-                <option value="buy">Покупка</option>
-                <option value="sell">Продажа</option>
-            </select>
         </div>
         
         <div class="form-group">
@@ -34,29 +27,72 @@
         </div>
         
         <div class="form-group">
-            <label for="date">Дата сделки:</label>
+            <label for="date">Дата покупки:</label>
             <input type="date" id="date" required>
         </div>
         
-        <button id="addTrade">Добавить сделку</button>
+        <button id="addPurchase">Добавить покупку</button>
         
-        <h2>История сделок</h2>
-        <table id="tradesTable">
+        <h2>Мои активы</h2>
+        <table id="assetsTable">
             <thead>
                 <tr>
-                    <th>Дата</th>
+                    <th>Дата покупки</th>
                     <th>Тикер</th>
-                    <th>Операция</th>
-                    <th>Цена</th>
+                    <th>Цена покупки</th>
                     <th>Кол-во</th>
                     <th>Сумма</th>
-                    <th>Действие</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
-            <tbody id="tradesList">
-                <!-- Сделки будут добавляться здесь -->
+            <tbody id="assetsList">
+                <!-- Активы будут добавляться здесь -->
             </tbody>
         </table>
+        
+        <h2>История продаж</h2>
+        <table id="salesTable">
+            <thead>
+                <tr>
+                    <th>Дата покупки</th>
+                    <th>Дата продажи</th>
+                    <th>Тикер</th>
+                    <th>Цена покупки</th>
+                    <th>Цена продажи</th>
+                    <th>Кол-во</th>
+                    <th>Прибыль</th>
+                </tr>
+            </thead>
+            <tbody id="salesList">
+                <!-- Продажи будут добавляться здесь -->
+            </tbody>
+        </table>
+        
+        <!-- Модальное окно для продажи -->
+        <div id="sellModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Продажа акций <span id="sellTicker"></span></h2>
+                <p>Доступно: <span id="availableQuantity"></span> шт.</p>
+                
+                <div class="form-group">
+                    <label for="sellPrice">Цена продажи:</label>
+                    <input type="number" id="sellPrice" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sellQuantity">Количество:</label>
+                    <input type="number" id="sellQuantity" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sellDate">Дата продажи:</label>
+                    <input type="date" id="sellDate" required>
+                </div>
+                
+                <button id="confirmSell">Подтвердить продажу</button>
+            </div>
+        </div>
     </div>
     
     <script src="script.js"></script>
