@@ -3,235 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Недельная инфляция в России: сравнение по годам</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.2"></script>
+    <title>Учёт сделок</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            max-width: 1200px;
+            font-family: Arial, sans-serif;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
             line-height: 1.6;
-            color: #333;
         }
         h1 {
+            color: #333;
             text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
             margin-bottom: 5px;
-            color: #2c3e50;
+            font-weight: bold;
         }
-        .subtitle {
-            text-align: center;
-            color: #7f8c8d;
-            margin-bottom: 30px;
-        }
-        .controls {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-        }
-        select, button {
-            padding: 8px 15px;
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            background-color: white;
-            font-size: 14px;
+            box-sizing: border-box;
         }
         button {
-            background-color: #3498db;
+            background-color: #4CAF50;
             color: white;
+            padding: 10px 15px;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-size: 16px;
         }
         button:hover {
-            background-color: #2980b9;
+            background-color: #45a049;
         }
-        .chart-container {
-            margin: 30px 0;
-            position: relative;
-            height: 500px;
+        #message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
         }
-        .data-source {
-            background-color: #ecf0f1;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 30px 0;
-            font-size: 14px;
-        }
-        .highlight {
-            background-color: #fffde7;
-            padding: 2px 5px;
-            border-radius: 3px;
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
         }
     </style>
 </head>
 <body>
-    <h1>Недельная инфляция в России: сравнение по годам</h1>
-    <div class="subtitle">Официальные данные Росстата с 2020 года по текущую дату</div>
+    <h1>Внесение информации по сделке</h1>
     
-    <div class="controls">
-        <select id="year1">
-            <option value="2020">2020 год</option>
-            <option value="2021">2021 год</option>
-            <option value="2022">2022 год</option>
-            <option value="2023" selected>2023 год</option>
-            <option value="2024">2024 год</option>
-        </select>
+    <form id="dealForm">
+        <div class="form-group">
+            <label for="dealName">Название сделки:</label>
+            <input type="text" id="dealName" name="dealName" required>
+        </div>
         
-        <select id="year2">
-            <option value="2020">2020 год</option>
-            <option value="2021">2021 год</option>
-            <option value="2022" selected>2022 год</option>
-            <option value="2023">2023 год</option>
-            <option value="2024">2024 год</option>
-        </select>
+        <div class="form-group">
+            <label for="clientName">Имя клиента:</label>
+            <input type="text" id="clientName" name="clientName" required>
+        </div>
         
-        <button id="updateChart">Сравнить</button>
-        <button id="showAll">Показать все годы</button>
-    </div>
+        <div class="form-group">
+            <label for="dealDate">Дата сделки:</label>
+            <input type="date" id="dealDate" name="dealDate" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="amount">Сумма сделки:</label>
+            <input type="number" id="amount" name="amount" step="0.01" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="status">Статус сделки:</label>
+            <select id="status" name="status" required>
+                <option value="">Выберите статус</option>
+                <option value="new">Новая</option>
+                <option value="in_progress">В процессе</option>
+                <option value="completed">Завершена</option>
+                <option value="cancelled">Отменена</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Описание:</label>
+            <textarea id="description" name="description" rows="4"></textarea>
+        </div>
+        
+        <button type="button" onclick="submitForm()">Внести информацию</button>
+    </form>
     
-    <div class="chart-container">
-        <canvas id="inflationChart"></canvas>
-    </div>
-
-    <div class="data-source">
-        <strong>Источник данных:</strong> Официальный сайт Росстата (<a href="https://rosstat.gov.ru" target="_blank">rosstat.gov.ru</a>)<br>
-        <strong>Методология:</strong> Индекс потребительских цен (ИПЦ), недельные изменения<br>
-        <strong>Последнее обновление:</strong> <span id="updateDate"></span><br>
-        <strong>Примечание:</strong> Данные за <span class="highlight">2024 год</span> включают предварительные оценки
-    </div>
-
+    <div id="message" class="success"></div>
+    
     <script>
-        // Данные по недельной инфляции (%)
-        const inflationByYear = {
-            "2020": [0.07, 0.08, 0.09, 0.10, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.21, 0.22, 0.23, 0.24, 0.25, 0.26, 0.27, 0.28, 0.29, 0.30, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.40, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.50, 0.51, 0.52, 0.53, 0.54, 0.55, 0.56, 0.57, 0.58],
-            "2021": [0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.21, 0.22, 0.23, 0.24, 0.25, 0.26, 0.27, 0.28, 0.29, 0.30, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.40, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.50, 0.51, 0.52, 0.53, 0.54, 0.55, 0.56, 0.57, 0.58, 0.59, 0.60, 0.61, 0.62, 0.63, 0.64, 0.65, 0.66],
-            "2022": [0.62, 0.63, 0.64, 0.65, 0.66, 0.67, 0.68, 0.69, 0.70, 0.71, 0.72, 0.73, 0.74, 0.75, 0.76, 0.77, 0.78, 0.79, 0.80, 0.81, 0.82, 0.83, 0.84, 0.85, 0.86, 0.87, 0.88, 0.89, 0.90, 0.91, 0.92, 0.93, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 1.00, 1.01, 1.02, 1.03, 1.04, 1.05, 1.06, 1.07, 1.08, 1.09, 1.10, 1.11, 1.12, 1.13],
-            "2023": [0.21, 0.22, 0.23, 0.24, 0.25, 0.26, 0.27, 0.28, 0.29, 0.30, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.40, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.50, 0.51, 0.52, 0.53, 0.54, 0.55, 0.56, 0.57, 0.58, 0.59, 0.60, 0.61, 0.62, 0.63, 0.64, 0.65, 0.66, 0.67, 0.68, 0.69, 0.70, 0.71, 0.72],
-            "2024": [0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.21, 0.22, 0.23, 0.24, 0.25, 0.26, 0.27, 0.28, 0.29, 0.30, 0.31, 0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.40, 0.41, 0.42, 0.43, 0.44, 0.45, 0.46, 0.47, 0.48, 0.49, 0.50, 0.51, 0.52, 0.53, 0.54, 0.55, 0.56, 0.57, 0.58, 0.59, 0.60, 0.61, 0.62]
-        };
-
-        // Цвета для каждого года
-        const yearColors = {
-            "2020": "rgba(75, 192, 192, 1)",
-            "2021": "rgba(54, 162, 235, 1)",
-            "2022": "rgba(255, 99, 132, 1)",
-            "2023": "rgba(153, 102, 255, 1)",
-            "2024": "rgba(255, 159, 64, 1)"
-        };
-
-        // Создаем массив недель (1-52)
-        const weeks = Array.from({length: 52}, (_, i) => `Неделя ${i+1}`);
-
-        // Устанавливаем дату обновления
-        document.getElementById('updateDate').textContent = new Date().toLocaleDateString('ru-RU');
-
-        // Инициализация графика
-        const ctx = document.getElementById('inflationChart').getContext('2d');
-        let chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: weeks,
-                datasets: []
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Сравнение недельной инфляции по годам',
-                        font: {
-                            size: 18
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}%`;
-                            }
-                        }
-                    },
-                    legend: {
-                        position: 'top',
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        title: {
-                            display: true,
-                            text: 'Недельная инфляция (%)'
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                return value + '%';
-                            }
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Неделя года'
-                        }
-                    }
-                }
-            }
-        });
-
-        // Функция обновления графика
-        function updateChart(yearsToShow = []) {
-            const datasets = [];
+        function submitForm() {
+            // Здесь будет логика отправки данных на сервер
+            // Пока просто показываем сообщение
             
-            if (yearsToShow.length === 0) {
-                // Показать все годы
-                Object.keys(inflationByYear).forEach(year => {
-                    datasets.push({
-                        label: `${year} год`,
-                        data: inflationByYear[year],
-                        borderColor: yearColors[year],
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.1
-                    });
-                });
-            } else {
-                // Показать выбранные годы
-                yearsToShow.forEach(year => {
-                    datasets.push({
-                        label: `${year} год`,
-                        data: inflationByYear[year],
-                        borderColor: yearColors[year],
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        borderWidth: 3,
-                        tension: 0.1
-                    });
-                });
-            }
+            document.getElementById('message').textContent = 'Информация внесена';
+            document.getElementById('message').style.display = 'block';
             
-            chart.data.datasets = datasets;
-            chart.update();
+            // Очищаем форму (опционально)
+            // document.getElementById('dealForm').reset();
+            
+            // Скрываем сообщение через 3 секунды
+            setTimeout(() => {
+                document.getElementById('message').style.display = 'none';
+            }, 3000);
         }
-
-        // Обработчики событий
-        document.getElementById('updateChart').addEventListener('click', function() {
-            const year1 = document.getElementById('year1').value;
-            const year2 = document.getElementById('year2').value;
-            updateChart([year1, year2]);
-        });
-
-        document.getElementById('showAll').addEventListener('click', function() {
-            updateChart();
-        });
-
-        // Инициализация с двумя последними годами
-        updateChart(['2023', '2024']);
     </script>
 </body>
 </html>
