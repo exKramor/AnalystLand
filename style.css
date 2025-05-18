@@ -1,93 +1,337 @@
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 20px;
-    color: #333;
-    background-color: #f5f5f5;
+:root {
+    --apple-black: #1d1d1f;
+    --apple-gray: #f5f5f7;
+    --apple-blue: #0066cc;
+    --apple-dark-blue: #0071e3;
 }
 
-.container {
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--apple-black);
+    background-color: white;
+    line-height: 1.5;
+}
+
+.apple-header {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 22px;
+}
+
+.apple-header nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.apple-header nav li {
+    padding: 18px 22px;
+}
+
+.apple-header nav a {
+    color: #f5f5f7;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    transition: opacity 0.3s;
+}
+
+.apple-header nav a:hover {
+    opacity: 0.7;
+}
+
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(to bottom, #000, #1d1d1f);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 56px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 28px;
+    margin-top: 0;
+    opacity: 0.8;
+}
+
+#skills-section {
+    padding: 80px 20px;
+    background-color: var(--apple-gray);
+}
+
+#skills-graph {
+    width: 100%;
+    height: 500px;
     max-width: 1000px;
     margin: 0 auto;
     background: white;
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+#chart-section {
+    padding: 0 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    transition: all 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+    opacity: 0;
+    transform: translateY(50px);
+    height: 0;
+    overflow: hidden;
+}
+
+#chart-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+    height: auto;
+    padding: 80px 20px;
+}
+
+.chart-container {
+    background: white;
+    border-radius: 18px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container h2 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#imoex-chart {
+    width: 100%;
+    height: 400px;
+}
+
+.chart-footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #86868b;
+    font-size: 14px;
+}
+
+.apple-footer {
+    text-align: center;
+    padding: 30px;
+    font-size: 12px;
+    color: #86868b;
+    background-color: var(--apple-gray);
+}
+
+.apple-footer a {
+    color: var(--apple-blue);
+    text-decoration: none;
+}
+
+.apple-footer a:hover {
+    text-decoration: underline;
+}
+
+.node {
+    stroke: #fff;
+    stroke-width: 2px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.node:hover {
+    transform: scale(1.1);
+}
+
+.node-label {
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.link {
+    stroke: #d2d2d7;
+    stroke-opacity: 0.8;
+}
+
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 119, 255, 0.2);
+    border-top-color: #0077ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.error-message {
+    text-align: center;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    color: #e74c3c;
 }
 
-h1, h2 {
-    color: #2c3e50;
+.error-message small {
+    display: block;
+    margin-top: 10px;
+    color: #95a5a6;
+    font-size: 12px;
 }
 
-.form-group {
+.hidden {
+    display: none;
+}
+#imoex-chart.loading {
+    position: relative;
+    min-height: 200px;
+}
+#imoex-chart.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(0,119,255,0.2);
+    border-top-color: #0077ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.loading {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+}
+
+.warning {
+    padding: 10px;
+    background: #FFF3E0;
+    color: #E65100;
+    text-align: center;
+    border-radius: 4px;
+    margin: 10px;
+}
+/* Добавим в конец файла */
+.investment-message {
+    text-align: center;
+    padding: 40px;
+    background-color: #f8f8fa;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.investment-message h3 {
+    font-size: 24px;
+    color: #1d1d1f;
+    margin-bottom: 20px;
+}
+
+.investment-message p {
+    font-size: 16px;
+    color: #86868b;
+    line-height: 1.6;
     margin-bottom: 15px;
 }
-
-label {
-    display: inline-block;
-    width: 120px;
-    font-weight: bold;
+/* Дополним существующие стили */
+.coming-soon.analytics svg {
+    stroke: #3498db;
 }
 
-input, select {
-    padding: 8px;
-    width: 200px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+.coming-soon.investments svg {
+    stroke: #e74c3c;
 }
 
-button {
-    padding: 10px 15px;
-    background: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    margin: 10px 0;
+.chart-container h2 {
+    color: #1d1d1f;
+    /* Уберем фиксированный текст из HTML */
+}
+/* Добавьте в конец файла */
+.coming-soon.python svg {
+    stroke: #4B8BBE; /* Официальный цвет Python */
 }
 
-button:hover {
-    background: #2980b9;
+.node[fill="#3498db"]:hover, .coming-soon.python {
+    --highlight-color: #4B8BBE;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+.node-label {
+    user-select: none; /* Запрещаем выделение текста */
 }
 
-th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+/* Адаптация для маленьких узлов */
+.node[level="1"] {
+    stroke-width: 1px;
 }
 
-th {
-    background-color: #3498db;
-    color: white;
+.node-label[font-size="7.5px"] {
+    font-size: 10px !important; /* Минимальный читаемый размер */
+}
+/* Стили для информационного блока */
+.info-message {
+    text-align: center;
+    padding: 40px;
+    background-color: #f8f8fa;
+    border-radius: 12px;
+    max-width: 500px;
+    margin: 0 auto;
+    animation: fadeIn 0.3s ease-out;
 }
 
-tr:hover {
-    background-color: #f5f5f5;
+.info-message svg {
+    margin-bottom: 20px;
 }
 
-.delete-btn {
-    background: #e74c3c;
-    padding: 5px 10px;
-    border-radius: 3px;
+.info-message p {
+    font-size: 20px;
+    color: #1d1d1f;
+    margin-bottom: 10px;
 }
 
-.delete-btn:hover {
-    background: #c0392b;
+.info-message small {
+    display: block;
+    font-size: 14px;
+    color: #86868b;
 }
 
-.comment {
-    color: #7f8c8d;
-    font-style: italic;
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .info-message {
+        padding: 20px;
+    }
+    
+    .info-message p {
+        font-size: 18px;
+    }
 }
