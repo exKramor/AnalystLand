@@ -3,59 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Учет покупок акций</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Мое обучение аналитике данных</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background: #2c3e50;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #34495e;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        section {
+            margin-bottom: 40px;
+        }
+        .project {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .skill {
+            background: #e0e0e0;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+        }
+        .timeline-content {
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Учет покупок акций</h1>
-        
-        <div class="form-group">
-            <label for="ticker">Тикер:</label>
-            <input type="text" id="ticker" required placeholder="Например: AAPL">
+    <header>
+        <h1>Мой путь в аналитике данных</h1>
+        <p>От новичка к профессионалу</p>
+    </header>
+
+    <nav>
+        <a href="#about">Обо мне</a>
+        <a href="#projects">Проекты</a>
+        <a href="#skills">Навыки</a>
+        <a href="#timeline">График обучения</a>
+        <a href="#contact">Контакты</a>
+    </nav>
+
+    <section id="about">
+        <h2>Обо мне</h2>
+        <p>Привет! Я изучаю аналитику данных и создаю этот сайт, чтобы документировать свой прогресс и делиться проектами.</p>
+    </section>
+
+    <section id="projects">
+        <h2>Мои проекты</h2>
+        <div class="project">
+            <h3>Анализ продаж</h3>
+            <p>Визуализация и выявление трендов продаж компании за 2023 год с помощью Python и Tableau.</p>
+            <a href="#">Подробнее</a>
         </div>
-        
-        <div class="form-group">
-            <label for="price">Цена покупки:</label>
-            <input type="number" id="price" step="0.01" required placeholder="В валюте бумаги">
+        <div class="project">
+            <h3>Дашборд в Excel</h3>
+            <p>Интерактивный дашборд для отслеживания KPI отдела маркетинга.</p>
+            <a href="#">Подробнее</a>
         </div>
-        
-        <div class="form-group">
-            <label for="quantity">Количество:</label>
-            <input type="number" id="quantity" required placeholder="Количество акций">
+    </section>
+
+    <section id="skills">
+        <h2>Навыки</h2>
+        <div class="skills-container">
+            <span class="skill">Excel</span>
+            <span class="skill">SQL</span>
+            <span class="skill">Python (Pandas)</span>
+            <span class="skill">Tableau</span>
+            <span class="skill">Power BI</span>
+            <span class="skill">Статистика</span>
         </div>
-        
-        <div class="form-group">
-            <label for="date">Дата покупки:</label>
-            <input type="date" id="date" required>
+    </section>
+
+    <section id="timeline">
+        <h2>Мой график обучения</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Январь 2024 - Основы Excel</h3>
+                    <p>Изучение продвинутых функций Excel, создание первых отчетов.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Март 2024 - Основы SQL</h3>
+                    <p>Написание запросов, работа с базами данных.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Май 2024 - Визуализация данных</h3>
+                    <p>Освоение Tableau и Power BI, создание дашбордов.</p>
+                </div>
+            </div>
         </div>
+    </section>
+
+    <section id="contact">
+        <h2>Контакты</h2>
+        <p>Email: example@email.com</p>
+        <p>Telegram: @yournickname</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Мое обучение аналитике данных</p>
+    </footer>
+
+    <script>
+        // Можно добавить интерактивности, например:
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Здесь можно добавить загрузку проектов или данных из JSON
+        async function loadProjects() {
+            // Пример загрузки данных
+            // const response = await fetch('projects.json');
+            // const projects = await response.json();
+            // Обработка и отображение проектов
+        }
         
-        <div class="form-group">
-            <label for="comment">Комментарий:</label>
-            <input type="text" id="comment" placeholder="Необязательное поле">
-        </div>
-        
-        <button id="addPurchase">Добавить покупку</button>
-        
-        <h2>Мои покупки</h2>
-        <table id="purchasesTable">
-            <thead>
-                <tr>
-                    <th>Дата</th>
-                    <th>Тикер</th>
-                    <th>Цена</th>
-                    <th>Кол-во</th>
-                    <th>Сумма</th>
-                    <th>Комментарий</th>
-                    <th>Действия</th>
-                </tr>
-            </thead>
-            <tbody id="purchasesList">
-                <!-- Покупки будут здесь -->
-            </tbody>
-        </table>
-    </div>
-    
-    <script src="script.js"></script>
+        loadProjects();
+    </script>
 </body>
 </html>
